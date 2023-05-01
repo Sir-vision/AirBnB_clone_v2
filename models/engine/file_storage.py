@@ -56,4 +56,4 @@ class FileStorage:
         try:
             del self.__objects[f"{type(obj).__name__}.{obj.id}"]
         except Exception:
-            pass
+            return
