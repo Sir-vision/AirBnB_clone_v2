@@ -9,10 +9,12 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns a dictionary of the list of objects.
+        
+        If a cls is specified, returns a dictionary of objects of the type.
+        """
         if cls:
-            return {k: v for k, v in FileStorage.__objects.items()
-                    if type(v) == cls}
+            return {k: v for k, v in FileStorage.__objects.items() if type(v) == cls}
         return FileStorage.__objects
 
     def new(self, obj):
@@ -21,7 +23,7 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
+        with open(FileStorage.__file_path, 'w', encoding='utf-8') as f:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
@@ -48,13 +50,13 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Delete obj from __objects if it's inside"""
+        """deletes obj from __objects if it’s inside"""
         try:
-            del self.__objects[f"{type(obj).__name__}.{obj.id}"]
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
         except Exception:
             pass
