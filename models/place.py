@@ -41,8 +41,8 @@ class Place(BaseModel, Base):
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
-#        amenities = relationship('Amenity', secondary='place_amenity',
-#                                  viewonly=False)
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 viewonly=False)
     else:
         @property
         def reviews(self):
@@ -59,42 +59,44 @@ class Place(BaseModel, Base):
                     reviews.append(review)
             return reviews
 
-#        @property
-#        def amenities(self):
+        @property
+        def amenities(self):
             """
             Gets a list of all amenities associated with the place
             Returns:
                 A list of amenity objects associated with this Place
             """
-#            from models import storage, Amenity
+            from models import storage, Amenity
 
-#            amenities = []
-#            for amenity in storage.all(Amenity).values():
-#                if amenity.id == self.amenity_id:
-#                    amenities.append(amenity)
-#            return amenities
-            
-            
+            amenities = []
+            for amenity in storage.all(Amenity).values():
+                if amenity.id == self.amenity_id:
+                    amenities.append(amenity)
+            return amenities
 
-#        @amenities.setter
-#        def amenities(self, amenity):
+        @amenities.setter
+        def amenities(self, amenity):
             """
-            Setter method for the 'amenities' attribute of the 'Place' class.
+            Setter method for the 'amenities'
+            attribute of the 'Place' class.
             Args:
-                amenity (Amenity): An instance of the 'Amenity' class to be added
+                amenity (Amenity): An instance of the
+                'Amenity' class to be added
                 to the 'amenity_ids' relationship.
             Returns:
-                None: If the argument is not an instance of the 'Amenity' class.
+                None: If the argument is not an
+                instance of the 'Amenity' class.
             """
-#            if isinstance(amenity, Amenity):
-#                self.amenity_ids.append(amenity)
+            if isinstance(amenity, Amenity):
+                self.amenity_ids.append(amenity)
+
 
 # an instance of SQLAlchemy Table for creating the relationship
 # Many-To-Many between Place and Amenity
-#place_amenity = Table('place_amenity', Base.metadata,
-#                      Column('place_id', String(60), ForeignKey('places.id'),
-#                             primary_key=True, nullable=False),
-#                      Column('amenity_id', String(60),
-#                             ForeignKey('amenities.id'),
-#                             primary_key=True, nullable=False)
-#                      )
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False)
+                      )
