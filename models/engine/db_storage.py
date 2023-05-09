@@ -46,7 +46,7 @@ class DBStorage:
             results = self.__session.query(State).all()
             results.extend(self.__session.query(City).all())
             results.extend(self.__session.query(User).all())
-#            results.extend(self.__session.query(Place).all())
+            results.extend(self.__session.query(Place).all())
 #            results.extend(self.__session.query(Review).all())
 #            results.extend(self.__session.query(Amenity).all())
 
